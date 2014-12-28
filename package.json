@@ -1,7 +1,7 @@
 {
-  "name": "upkeepr-api",
+  "name": "quickstart-api",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
@@ -41,12 +41,13 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/matt/upkeepr-api.git"
+    "url": "git://github.com/matt/quickstart-api.git"
   },
   "author": "matt",
   "license": "",
   "devDependencies": {
     "chai": "^1.10.0",
+    "expect": "^1.1.0",
     "mocha": "^2.1.0",
     "sails-memory": "^0.10.3",
     "supertest": "^0.15.0"
