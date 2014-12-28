@@ -11,8 +11,6 @@ describe('VehicleController', function () {
                 .get('/vehicle')
                 .expect(401,done);
         });
-        it("should fail", function(){
-            expect(1).toBe(1);
-        });
+        it("should allow user to post new vehicle");
     });
 });
