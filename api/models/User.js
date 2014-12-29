@@ -27,6 +27,10 @@ module.exports = {
         },
         active: {
             type: 'boolean'
+        },
+        weighIns: {
+            collection: 'weighIn',
+            via: 'owner'
         }
     },
     beforeCreate: function (attributes, next) {

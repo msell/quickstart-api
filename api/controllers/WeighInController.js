@@ -1,0 +1,11 @@
+/**
+ * WeighInController
+ *
+ * @description :: Server-side logic for managing weighins
+ * @help        :: See http://links.sailsjs.org/docs/controllers
+ */
+
+module.exports = {
+	
+};
+
