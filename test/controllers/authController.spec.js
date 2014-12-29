@@ -9,7 +9,7 @@ describe('AuthController', function () {
     describe("register", function () {
         it("should register new user", function (done) {
             request(sails.hooks.http.app)
-                .get('/auth/register')
+                .post('/auth/register')
                 .send({email:'foo@bar.com', password:'abc123!'})
                 .expect(200, done);
         });    

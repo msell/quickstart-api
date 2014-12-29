@@ -15,7 +15,7 @@ module.exports = {
     login: function (req, res) {
         var email = req.body.email;
         var password = req.body.password;
-
+        
         if (!email || !password) {
             return res.status(401).send({
                 message: 'username and password required'
