@@ -131,7 +131,7 @@ module.exports = {
             }, function (err, response, profile) {                
                 User.findOneByGoogleId(profile.sub).exec(function (err, foundUser) {                    
                     if (foundUser) {
-                        console.log('welcome back '+ foundUser.displayNamegit );
+                        console.log('welcome back '+ foundUser.displayName);
                         return createAndSendToken(foundUser, res);
                     }
 
