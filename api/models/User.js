@@ -30,7 +30,7 @@ module.exports = {
         },
         weighIns: {
             collection: 'weighIn',
-            via: 'owner'
+            via: 'user'
         }
     },
     beforeCreate: function (attributes, next) {
