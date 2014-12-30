@@ -30,14 +30,12 @@ module.exports = {
             model: 'user'
         }
     },
-    beforeCreate: function (values, next) {
-        console.log(JSON.stringify(values));
+    beforeCreate: function (values, next) {        
         User.findOne({
             id: values.user
         }).exec(function (err, user) {
             if (err) return next(err);
-            if (!user) {
-                console.log(user);            
+            if (!user) {                         
                 return next(validationError({user: [{message: 'User does not exist'}]}, 400));
             }
             next();
