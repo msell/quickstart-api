@@ -4,13 +4,26 @@ var VehcileController = require('../../api/controllers/WeighInController'),
     chai = require('chai');
 
 describe('WeighIn Controller', function () {
+    beforeEach(function () {
+        // create user
+        request(sails.hooks.http.app)
+            .post('/auth/register')
+            .send({
+                email: 'foo@bar.com',
+                password: 'scoobysnacks'
+            })
+            .end(function (err, res) {
+                if (err) return done(err);
+                done();
+            })
+    });
     it('should accept weigh in', function (done) {
         request(sails.hooks.http.app)
             .post('/weighIn/create')
             .send({
                 'weight': 200,
                 'date': '2015-01-01',
-                'owner': 1
+                'user': 1
             })
 
         .expect(200)
@@ -39,7 +52,7 @@ describe('WeighIn Controller', function () {
             .send({
                 'weight': 200,
                 'date': '2015-01-01',
-                'owner': 555
+                'user': 555
             })
 
         .expect(400)
