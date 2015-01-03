@@ -1,9 +1,4 @@
-/**
- * WeighIn.js
- *
- * @description :: TODO: You might write a short summary of how this model works and what it represents here.
- * @docs        :: http://sailsjs.org/#!documentation/models
- */
+//var validateUser = require('../services/validateUser.js')
 
 function validationError(invalidAttributes, status, message) {
   var WLValidationError = require('../../node_modules/sails/node_modules/waterline/lib/waterline/error/WLValidationError.js');

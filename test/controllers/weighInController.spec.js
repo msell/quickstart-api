@@ -1,5 +1,4 @@
-var VehcileController = require('../../api/controllers/WeighInController'),
-    request = require('supertest'),
+var request = require('supertest'),
     expect = require('expect'),
     chai = require('chai');
 
