@@ -12,7 +12,7 @@ module.exports = {
       endDate: { type: 'date', required: true},
       startWeight: { type: 'integer', required: true, min: 100},
       endWeight: { type: 'integer', required: true, min: 100},
-      user: {model: 'user'}
+      user: {model: 'user', required: true}
   }
 };
 

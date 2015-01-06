@@ -20,6 +20,9 @@
 module.exports.policies = {
     'VehicleController':{
         'find' : ['jwtAuth']
+    },
+    'WeightLossGoalController':{
+        '*' : ['jwtAuth']
     }
   /***************************************************************************
   *                                                                          *

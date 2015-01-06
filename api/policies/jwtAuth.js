@@ -1,4 +1,5 @@
 var jwt = require('jwt-simple');
+
 module.exports = function(req, res, next){
     
     if (!req.headers || !req.headers.authorization) {
@@ -15,5 +16,11 @@ module.exports = function(req, res, next){
             message: 'Authentication failed'
         });
     }
-    next();
+        
+    sails.models.user.findOne({id: payload['sub']}, function(err, user){  
+        if(err) return next(err);
+                
+        req.session.userId = user.id;
+        next();
+    })    
 }
