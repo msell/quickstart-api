@@ -10,7 +10,7 @@ describe('AuthController', function () {
         it("should register new user", function (done) {
             request(sails.hooks.http.app)
                 .post('/auth/register')
-                .send({email:'foo@bar.com', password:'abc123!'})
+                .send({email:'foo@baz.com', password:'abc123!'})
                 .expect(200, done);
         });
         it("should reqire password", function (done) {

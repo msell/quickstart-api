@@ -5,10 +5,12 @@
  */
 var Sails = require('sails');
 var _ = require('lodash');
+var request = require('supertest');
 
 global.DOMAIN = 'http://localhost';
 global.PORT = 1420;
 global.HOST = DOMAIN + ':' + PORT;
+global.TOKEN = {};
 
 before(function (callback) {
     this.timeout(7000);
@@ -46,7 +48,24 @@ before(function (callback) {
             return callback(err);
         }
 
-        console.log('rodo!')
+        console.log('rodo!');
+        request(sails.hooks.http.app)
+            .post('/auth/register')
+            .send({
+                email: 'foo@bar.com',
+                password: 'abc123!'
+            })
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    console.error(err);
+                    return callback(err);
+                }
+
+                TOKEN = res.body.token
+                console.log("token: " + TOKEN);
+            });
+
         // here you can load fixtures, etc.
         callback(err, sails);
     });
