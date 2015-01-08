@@ -42,15 +42,14 @@ describe('WeightLossGoal Controller', function () {
     it('should require existing user',
         function (done) {
             request(sails.hooks.http.app)
-                .post('/weightLossGoal/create')
-                .set('Authorization', TOKEN)
+                .post('/weightLossGoal/create')                
                 .send({
                     'startDate': '2015-01-01',
                     'endDate': '2015-06-01',
                     'startWeight': 260,
                     'endWeight': 200
                 })
-                .expect(400)
+                .expect(401)
                 .end(function (err, res) {
                     if (err) return done(err);
                     done();
