@@ -62,7 +62,7 @@ before(function (callback) {
                     return callback(err);
                 }
 
-                TOKEN = res.body.token
+                TOKEN = 'bearer ' + res.body.token
                 console.log("token: " + TOKEN);
             });
 
