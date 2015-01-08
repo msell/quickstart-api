@@ -17,14 +17,15 @@ describe('WeightLossGoal Controller', function () {
                 })
         });
         it('should accept new goal', function (done) {
+            token = {};
             request(sails.hooks.http.app)
                 .post('/weightLossGoal/create')
+                .set('Authorization', token)
                 .send({
                     'startDate': '2015-01-01',
                     'endDate': '2015-06-01',
                     'startWeight': 260,
-                    'endWeight': 200,
-                    'user': 1
+                    'endWeight': 200                    
                 })
 
             .expect(200)
