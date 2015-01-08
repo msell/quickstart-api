@@ -3,8 +3,9 @@ var request = require('supertest'),
     chai = require('chai');
 
 describe('WeightLossGoal Controller', function () {
-        beforeEach(function () {
+        beforeEach(function () {            
             // create user
+            debugger
             request(sails.hooks.http.app)
                 .post('/auth/register')
                 .send({
@@ -12,19 +13,22 @@ describe('WeightLossGoal Controller', function () {
                     password: 'scoobysnacks'
                 })
                 .end(function (err, res) {
-                    if (err) return done(err);
+                    if (err) {
+                        console.log(err);
+                        return done(err);
+                    }
+                    console.log('response: ' + JSON.stringify(res));
                     done();
                 })
         });
-        it('should accept new goal', function (done) {
+        it('should accept new goal', function (done) {            
             request(sails.hooks.http.app)
                 .post('/weightLossGoal/create')
                 .send({
                     'startDate': '2015-01-01',
                     'endDate': '2015-06-01',
                     'startWeight': 260,
-                    'endWeight': 200,
-                    'user': 1
+                    'endWeight': 200                    
                 })
 
             .expect(200)
@@ -41,8 +45,7 @@ describe('WeightLossGoal Controller', function () {
                     'startDate': '2015-01-01',
                     'endDate': '2015-06-01',
                     'startWeight': 260,
-                    'endWeight': 0,
-                    'user': 1
+                    'endWeight': 0                    
                 })
 
             .expect(400)
