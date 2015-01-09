@@ -19,13 +19,14 @@ module.exports = function(req, res, next){
         
     sails.models.user.findOne({id: payload['sub']}, function(err, user){  
         if(err) return next(err);
-           
-        req.body.user = user;
-//        var model = req.options.model || req.options.controller;
-//        if(model && sails.models[model].attributes['user']){
-//            req.body[model].user = user;
-//        }
-        
+
+        req.options.values = req.options.values || {};
+
+        if(user){
+          console.log('user found ' + user);
+          req.options.values.user = user;
+        }
+
         next();
     })    
 }
