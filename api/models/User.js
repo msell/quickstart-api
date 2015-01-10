@@ -31,6 +31,10 @@ module.exports = {
         weighIns: {
             collection: 'weighIn',
             via: 'user'
+        },
+        weightLossGoals:{
+            collection: 'weightLossGoal',
+            via: 'user'
         }
     },
     beforeCreate: function (attributes, next) {
