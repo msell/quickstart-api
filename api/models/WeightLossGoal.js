@@ -13,6 +13,10 @@ module.exports = {
       startWeight: { type: 'integer', required: true, min: 100},
       endWeight: { type: 'integer', required: true, min: 100},
       user: {model: 'user'}
-  }
+  },
+    beforeCreate:function(values, cb){
+        console.log(values);
+        cb();
+    }
 };
 
