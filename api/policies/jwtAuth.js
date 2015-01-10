@@ -24,9 +24,7 @@ module.exports = function (req, res, next) {
 
         req.options.values = req.options.values || {};
 
-        if (user) {
-            console.log('user found ' + user);
-            
+        if (user) {                        
             // suposedly the correct way is to use the req,options.values, but im not a level 6 wizard yet
             //req.options.values.user = user;
             req.body.user = user;
