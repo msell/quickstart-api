@@ -19,6 +19,7 @@ describe('WeighIn Controller', function () {
     it('should accept weigh in', function (done) {
         request(sails.hooks.http.app)
             .post('/weighIn/create')
+        .set('Authorization', TOKEN)
             .send({
                 'weight': 200,
                 'date': '2015-01-01',
@@ -33,13 +34,13 @@ describe('WeighIn Controller', function () {
     });
     it('should require a user association', function (done) {
         request(sails.hooks.http.app)
-            .post('/weighIn/create')
+            .post('/weighIn/create')        
             .send({
                 'weight': 200,
                 'date': '2015-01-01'
             })
 
-        .expect(400)
+        .expect(401)
             .end(function (err, res) {
                 if (err) return done(err);
                 done();
@@ -54,7 +55,7 @@ describe('WeighIn Controller', function () {
                 'user': 555
             })
 
-        .expect(400)
+        .expect(401)
             .end(function (err, res) {
                 if (err) return done(err);
                 done();

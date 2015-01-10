@@ -23,6 +23,9 @@ module.exports.policies = {
     },
     'WeightLossGoalController':{
         '*' : ['jwtAuth']
+    },
+    'WeighInController':{
+        '*' : ['jwtAuth']
     }
   /***************************************************************************
   *                                                                          *

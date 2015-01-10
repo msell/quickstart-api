@@ -12,10 +12,10 @@ module.exports = {
       endDate: { type: 'date', required: true},
       startWeight: { type: 'integer', required: true, min: 100},
       endWeight: { type: 'integer', required: true, min: 100},
-      user: {model: 'user'}
+      user: {model: 'user', required: true}
   },
     beforeCreate:function(values, cb){
-        console.log(values);
+        //console.log(values);
         cb();
     }
 };
