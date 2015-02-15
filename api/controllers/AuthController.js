@@ -15,7 +15,7 @@ module.exports = {
     login: function (req, res) {
         var email = req.body.email;
         var password = req.body.password;
-        
+
         if (!email || !password) {
             return res.status(401).send({
                 message: 'username and password required'
@@ -72,30 +72,34 @@ module.exports = {
             redirect_uri: req.body.redirectUri,
             client_secret: process.env.FACEBOOK_SECRET,
             code: req.body.code
-        };        
+        };
 
         request.get({
             url: accessTokenUrl,
             qs: params
         }, function (err, response, accessToken) {
-            
-            accessToken = qs.parse(accessToken);            
-            
-            request.get({url: graphApiUrl, qs: accessToken, json: true}, function (err, response, profile) {                               
+
+            accessToken = qs.parse(accessToken);
+
+            request.get({
+                url: graphApiUrl,
+                qs: accessToken,
+                json: true
+            }, function (err, response, profile) {
                 User.findOneByFacebookId(profile.id).exec(function (err, existingUser) {
-                    if (existingUser){
+                    if (existingUser) {
                         console.log('facebook user back ' + existingUser);
                         emailService.send('mwsell@gmail.com');
-                        return createAndSendToken(existingUser, res);                    
+                        return createAndSendToken(existingUser, res);
                     }
-                        
+
                     console.log('New facebook user: ' + profile.name);
                     User.create({
                         facebookId: profile.id,
                         displayName: profile.name
                     }).exec(function (err, newUser) {
                         if (err) return res.status(403);
-                        
+
                         return createAndSendToken(newUser, res);
                     })
                 })
@@ -128,10 +132,10 @@ module.exports = {
                 url: apiUrl,
                 headers: headers,
                 json: true
-            }, function (err, response, profile) {                
-                User.findOneByGoogleId(profile.sub).exec(function (err, foundUser) {                    
+            }, function (err, response, profile) {
+                User.findOneByGoogleId(profile.sub).exec(function (err, foundUser) {
                     if (foundUser) {
-                        console.log('welcome back '+ foundUser.displayName);
+                        console.log('welcome back ' + foundUser.displayName);
                         return createAndSendToken(foundUser, res);
                     }
 
@@ -147,5 +151,12 @@ module.exports = {
                 })
             })
         });
+    },
+    twitter: function (req, res, accessToken) {
+        var url = 'https://api.twitter.com/oauth/request_token';
+        
+        request.get({url:url},function(err, response){
+          User.findOneByTwitterId(accessToken)  
+        })
     }
 };

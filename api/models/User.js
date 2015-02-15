@@ -22,6 +22,9 @@ module.exports = {
         facebookId: {
             type: 'string'
         },
+        twitterId:{
+            type: 'string'
+        },
         displayName: {
             type: 'string'
         },
