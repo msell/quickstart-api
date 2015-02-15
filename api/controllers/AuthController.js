@@ -10,6 +10,7 @@ var createAndSendToken = require('../services/createAndSendToken.js');
 var request = require('request');
 var qs = require('querystring');
 var emailService = require('../services/emailService.js');
+var jwt = require('jwt-simple');
 
 module.exports = {
     login: function (req, res) {
@@ -152,11 +153,97 @@ module.exports = {
             })
         });
     },
-    twitter: function (req, res, accessToken) {
-        var url = 'https://api.twitter.com/oauth/request_token';
-        
-        request.get({url:url},function(err, response){
-          User.findOneByTwitterId(accessToken)  
-        })
+    twitter: function (req, res) {
+        var requestTokenUrl = 'https://api.twitter.com/oauth/request_token';
+        var accessTokenUrl = 'https://api.twitter.com/oauth/access_token';
+        var authenticateUrl = 'https://api.twitter.com/oauth/authorize';
+
+        if (!req.query.oauth_token || !req.query.oauth_verifier) {
+            var requestTokenOauth = {
+                consumer_key: 'UENUvKrmfHn31MmBy2Xufo8QN',
+                consumer_secret: process.env.TWITTER_SECRET,
+                callback: 'http://localhost:9000'
+            };
+
+            // Step 1. Obtain request token for the authorization popup.
+            request.post({
+                url: requestTokenUrl,
+                oauth: requestTokenOauth
+            }, function (err, response, body) {
+                var oauthToken = qs.parse(body);
+                var params = qs.stringify({
+                    oauth_token: oauthToken.oauth_token
+                });
+
+                // Step 2. Redirect to the authorization screen.
+                res.redirect(authenticateUrl + '?' + params);
+            });
+        } else {
+            var accessTokenOauth = {
+                consumer_key: 'UENUvKrmfHn31MmBy2Xufo8QN',
+                consumer_secret: process.env.TWITTER_SECRET,
+                token: req.query.oauth_token,
+                verifier: req.query.oauth_verifier
+            };
+
+            // Step 3. Exchange oauth token and oauth verifier for access token.
+            request.post({
+                url: accessTokenUrl,
+                oauth: accessTokenOauth
+            }, function (err, response, profile) {
+                profile = qs.parse(profile);
+                // Step 4a. Link user accounts.
+                if (req.headers.authorization) {
+                    User.findOne({
+                        twitter: profile.user_id
+                    }, function (err, existingUser) {
+                        if (existingUser) {
+                            return res.status(409).send({
+                                message: 'There is already a Twitter account that belongs to you'
+                            });
+                        }
+                        var token = req.headers.authorization.split(' ')[1];
+                        var payload = jwt.decode(token, 'shhh..');
+                        User.findById(payload.sub, function (err, user) {
+                            if (!user) {
+                                return res.status(400).send({
+                                    message: 'User not found'
+                                });
+                            }
+                            user.twitter = profile.user_id;
+                            user.displayName = user.displayName || profile.screen_name;
+                            user.twitterToken = profile.oauth_token;
+                            user.twitterSecret = profile.oauth_token_secret;
+
+                            User.create({
+                                twitter: user.twitter,
+                                displayName: user.displayName,
+                                twitterToken: user.twitterToken,
+                                twitterSecret: user.twitterSecret
+                            }).exec(function (err, user) {
+                                createAndSendToken(user, res);
+                            });
+                        });
+                    });
+                } else {
+                    // Step 4b. Create a new user account or return an existing one.
+                    User.findOne({
+                        twitter: profile.user_id
+                    }, function (err, existingUser) {
+                        if (existingUser) {
+                            createAndSendToken(existingUser, res);
+                        }
+                        User.create({
+                            twitter: profile.user_id,
+                            displayName: profile.screen_name,
+                            twitterToken: profile.oauth_token,
+                            twitterSecret: profile.oauth_token_secret
+                        }).exec(function (err, user) {
+                            createAndSendToken(user, res);
+                        });
+                    });
+                }
+            });
+        }
     }
 };
