@@ -1,5 +1,11 @@
 # api [![Build Status](https://travis-ci.org/msell/quickstart-api.svg?branch=master)](https://travis-ci.org/msell/quickstart-api)
 
+## Project Objectives:
+- Learn more about Sails.js
+- Learn how to integrate project with CI
+- Learn how to authorize users with combination of OAuth/local strategy.
+- Learn how to test api using supertest
+
 a [Sails](http://sailsjs.org) application
 
 # Run tests
