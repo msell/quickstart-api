@@ -5,6 +5,7 @@
 - Learn how to integrate project with CI
 - Learn how to authorize users with combination of OAuth/local strategy.
 - Learn how to test api using supertest
+- Deploy to Heroku / MongoLabs
 
 a [Sails](http://sailsjs.org) application
 
