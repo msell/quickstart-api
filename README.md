@@ -7,7 +7,7 @@
 - Learn how to test api using supertest
 - Deploy to Heroku / MongoLabs
 
-a [Sails](http://sailsjs.org) application
+a sample [Sails](http://sailsjs.org) application
 
 # Run tests
 ```
